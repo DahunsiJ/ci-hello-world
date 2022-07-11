@@ -4,6 +4,14 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+# jobs:
+#   say-myname:
+#     - image: cimg/base:stable
+#   steps:
+#       - checkout
+#       - run:
+#           name: "say justus"
+#           command: "echo justus, try!"
 jobs:
   print-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -16,7 +24,8 @@ jobs:
       - checkout
       - run:
           name: "print hello"
-          command: "echo Hello, World!"
+          command: 
+            echo $MY_FIRST_ENVR	
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

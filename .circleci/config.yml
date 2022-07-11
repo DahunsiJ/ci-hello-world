@@ -13,28 +13,28 @@ version: 2.1
 #           name: "say justus"
 #           command: "echo justus, try!"
 jobs:
-  print-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  save_hello_world_output:
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - run:
-          name: "print hello"
-          command: 
-            echo $MY_FIRST_ENVR	
+      - run: echo "hello world" > ~/output.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - output.txt
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  print_output_file:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/output.txt
+
 workflows:
-  print-hello-workflow:
+  my_workflow:
     jobs:
-      - print-hello
-      - print-hello:
+      - save_hello_world_output
+      - print_output_file:
           requires:
-            - print-hello
-
-
+            - save_hello_world_output
